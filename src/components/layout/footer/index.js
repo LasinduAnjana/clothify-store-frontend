@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <footer className="mt-4 px-8 pt-8 pb-4 lg:px-32 lg:pt-12 lg:pb-8 w-full">
+    <footer className="mt-4 px-8 pt-8 pb-4 lg:px-32 lg:pt-12 lg:pb-8 w-full bg-black tect-white">
       <div className="w-full flex flex-col content-center text-center pb-4">
         <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
           Subscribe to our newsletter.
@@ -29,7 +29,7 @@ const Footer = () => {
           </button>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3">
+      <div className="grid grid-cols-1 md:grid-cols-3 text-white">
         <div className="py-4 text-center">
           <p>About Brand</p>
           <p>About Us</p>
@@ -48,7 +48,7 @@ const Footer = () => {
           <p>Instagram</p>
         </div>
       </div>
-      <div className="text-center">
+      <div className="text-center text-white">
         <span>Copyright © 2023 Clothify Store. All rights reserved</span>
       </div>
     </footer>

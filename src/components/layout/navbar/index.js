@@ -1,15 +1,18 @@
 "use client";
 
-import { Fragment, useEffect, useState } from "react";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { useState } from "react";
+import { Disclosure } from "@headlessui/react";
 import {
   Bars3Icon,
-  HeartIcon,
-  MagnifyingGlassIcon,
   ShoppingCartIcon,
+  UserCircleIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import CartComponent from "../cart";
+import LoginScreen from "@/components/auth/login";
+import RegisterScreen from "@/components/auth/register";
+import Cookies from "universal-cookie";
+const cookie = new Cookies();
 
 const navigation = [
   { name: "HOME", href: "/", current: true },
@@ -25,14 +28,28 @@ function classNames(...classes) {
 
 export default function Navbar() {
   const [cartOpen, setCartOpen] = useState(false);
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [registerOpen, setRegisterOpen] = useState(false);
+
+  const accessToken = cookie.get("ClothifyStore");
 
   return (
     <>
       <CartComponent open={cartOpen} setOpen={setCartOpen} />
+      <LoginScreen
+        open={loginOpen}
+        setOpen={setLoginOpen}
+        setRegisterOpen={setRegisterOpen}
+      />
+      <RegisterScreen
+        open={registerOpen}
+        setOpen={setRegisterOpen}
+        setLoginOpen={setLoginOpen}
+      />
       <Disclosure as="nav" className="bg-black text-white">
         {({ open }) => (
           <>
-            <div className="mx-auto max-w-7xl sm:px-6 lg:px-32 py-4">
+            <div className="mx-auto max-w-7xl sm:px-6 lg:px-16 py-4">
               <div className="relative flex h-16 items-center justify-between">
                 <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                   {/* Mobile menu button*/}
@@ -72,33 +89,51 @@ export default function Navbar() {
                   </div>
                 </div>
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                  <button
-                    type="button"
-                    className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                  >
-                    <span className="absolute -inset-1.5" />
-                    <span className="sr-only">View notifications</span>
-                    <MagnifyingGlassIcon
-                      className="h-6 w-6"
-                      aria-hidden="true"
-                    />
-                  </button>
+                  {!accessToken ? (
+                    <div>
+                      <button
+                        onClick={(e) => console.log("Profile clicked")}
+                        type="button"
+                        className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 flex flex-row"
+                      >
+                        <span className="absolute -inset-1.5" />
+                        <span className="sr-only">Profile</span>
+                        <p>Username</p>
+                        <UserCircleIcon
+                          className="h-8 w-8"
+                          aria-hidden="true"
+                        />
+                      </button>
+                    </div>
+                  ) : (
+                    <div>
+                      <button
+                        onClick={(e) => setLoginOpen(true)}
+                        type="button"
+                        className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 flex flex-row"
+                      >
+                        <span className="absolute -inset-1.5" />
+                        <span className="sr-only">Profile</span>
+                        <p>Login</p>
+                      </button>
+                      <button
+                        onClick={(e) => setRegisterOpen(true)}
+                        type="button"
+                        className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 flex flex-row"
+                      >
+                        <span className="absolute -inset-1.5" />
+                        <span className="sr-only">Profile</span>
+                        <p>Sign up</p>
+                      </button>
+                    </div>
+                  )}
+
                   <button
                     onClick={(e) => setCartOpen(true)}
                     type="button"
                     className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                   >
-                    <span className="absolute -inset-1.5" />
-                    <span className="sr-only">View notifications</span>
-                    <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
-                  </button>
-                  <button
-                    type="button"
-                    className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                  >
-                    <span className="absolute -inset-1.5" />
-                    <span className="sr-only">View notifications</span>
-                    <HeartIcon className="h-6 w-6" aria-hidden="true" />
+                    <ShoppingCartIcon className="h-8 w-8" aria-hidden="true" />
                   </button>
                 </div>
               </div>

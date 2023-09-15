@@ -11,7 +11,7 @@ const NewArrival = () => {
   useEffect(() => {
     const getProducts = async () => {
       axios
-        .get("http://localhost:8080/api/v1/public/product/new")
+        .get(`http://localhost:8080/api/v1/public/product/new`)
         .then((res) => {
           setproducts(res.data);
         })

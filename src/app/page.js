@@ -2,6 +2,7 @@ import CategorySection from "@/components/home/categorySection";
 import HeroSection from "@/components/home/heroSection";
 import NewArrival from "@/components/home/newArrival";
 import Cart from "@/components/layout/cart";
+import axios from "axios";
 
 export default function Home() {
   return (
