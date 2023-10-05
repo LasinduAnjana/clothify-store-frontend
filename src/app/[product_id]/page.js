@@ -4,11 +4,13 @@ import { BASE_URL } from "@/config/apiConfig";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Carousel } from "react-responsive-carousel";
+import { RadioGroup } from "@headlessui/react";
 
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 
 const page = ({ params }) => {
   const [product, setproduct] = useState(null);
+  const [selectedSize, setSelectedSize] = useState(null);
 
   const getProductData = () => {
     axios
@@ -52,17 +54,71 @@ const page = ({ params }) => {
             <p className="py-4">Material : {product.material}</p>
             <p className="py-4">Type : {product.type}</p>
             <p className="py-4">Category : {product.category}</p>
-            <div className="grid grid-cols-6 gap-5 pt-5">
-                <div className="w-full border-2 rounded-md border-solid border-slate-600 text-center p-1">XS</div>
-                <div className="w-full border-2 rounded-md border-solid border-slate-600 text-center p-1">S</div>
-                <div className="w-full border-2 rounded-md border-solid border-slate-600 text-center p-1">M</div>
-                <div className="w-full border-2 rounded-md border-solid border-slate-600 text-center p-1">L</div>
-                <div className="w-full border-2 rounded-md border-solid border-slate-600 text-center p-1">XL</div>
-                <div className="w-full border-2 rounded-md border-solid border-slate-600 text-center p-1">XXL</div>
+            <div className="py-5">
+              <RadioGroup value={selectedSize} onChange={setSelectedSize}>
+                <RadioGroup.Label className="sr-only">
+                  Server size
+                </RadioGroup.Label>
+                <div className="space-y-2 grid grid-cols-6 gap-5">
+                  {product.size.map((plan) => (
+                    <RadioGroup.Option
+                      key={plan}
+                      value={plan}
+                      className={({ active, checked }) =>
+                        `${
+                          active
+                            ? "ring-2 ring-white ring-opacity-60 ring-offset-2 ring-offset-sky-300"
+                            : ""
+                        }
+                  ${
+                    checked ? "bg-sky-900 bg-opacity-75 text-white" : "bg-white"
+                  }
+                    relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none`
+                      }
+                    >
+                      {({ active, checked }) => (
+                        <>
+                          <div className="flex w-full items-center justify-between">
+                            <div className="flex items-center">
+                              <div className="text-sm">
+                                <RadioGroup.Label
+                                  as="p"
+                                  className={`font-medium  ${
+                                    checked ? "text-purple" : "text-gray-900"
+                                  }`}
+                                >
+                                  {plan == "EXTRA_SMALL"
+                                    ? "XS"
+                                    : plan == "SMALL"
+                                    ? "S"
+                                    : plan == "MEDIUM"
+                                    ? "M"
+                                    : plan == "LARGE"
+                                    ? "L"
+                                    : plan == "EXTRA_LARGE"
+                                    ? "XL"
+                                    : plan == "DOUBLE_EXTRA_LARGE"
+                                    ? "XXL"
+                                    : "OTHER"}
+                                </RadioGroup.Label>
+                              </div>
+                            </div>
+                            {checked && (
+                              <div className="shrink-0 text-white">
+                                <CheckIcon className="h-6 w-6" />
+                              </div>
+                            )}
+                          </div>
+                        </>
+                      )}
+                    </RadioGroup.Option>
+                  ))}
+                </div>
+              </RadioGroup>
             </div>
-            <div className="p-2 my-5 rounded-lg bg-purple w-full text-center text-white">
+            <button className="p-2 my-5 rounded-lg bg-purple w-full text-center text-white">
               <p>Add to cart</p>
-            </div>
+            </button>
           </div>
         </div>
       ) : (
@@ -71,5 +127,20 @@ const page = ({ params }) => {
     </div>
   );
 };
+
+function CheckIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" {...props}>
+      <circle cx={12} cy={12} r={12} fill="#fff" opacity="0.2" />
+      <path
+        d="M7 13l3 3 7-7"
+        stroke="#fff"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 export default page;
