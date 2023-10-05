@@ -31,7 +31,7 @@ export default function Navbar() {
   const [loginOpen, setLoginOpen] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
 
-  const accessToken = cookie.get("ClothifyStore");
+  const accessToken = cookie.get("clothifyStore");
 
   return (
     <>
@@ -89,7 +89,7 @@ export default function Navbar() {
                   </div>
                 </div>
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                  {!accessToken ? (
+                  {accessToken ? (
                     <div>
                       <button
                         onClick={(e) => console.log("Profile clicked")}
